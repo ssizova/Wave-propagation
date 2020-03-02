@@ -42,7 +42,7 @@ end;
 % -------------------------------
 Kel = zeros(3,3);
 % choix de sigma en fonction d'ou le triangle apparait
-switch indicateur_l
+switch Reftri
  case 1
    sigma_ = sigma1;
  case 2

@@ -235,5 +235,52 @@ On peut utilisé le théorie connu pour exprimer cette condition dans une autre 
 		\nonumber
 	& &\text{ qui est equivalente de la formulation } c^2\mathbb{K}U = \lambda_h \mathbb{M}U.
 \end{eqnarray}
-Alors, le schéma est stable, si le pas en temps $\Delta t \leq \frac{2}{c \sqrt{\sup |\lambda_i|}}$. Pour donner l'expression plus précise il faut calculer le spectre du problème \eqref{propres}.
+Alors, le schéma est stable, si le pas en temps 
+\begin{equation}
+\label{CFL}
+\Delta t \leq \frac{2}{c \sqrt{\sup |\lambda_i|}}.
+\end{equation}
+Pour donner l'expression plus précise il faut calculer le spectre du problème \eqref{propres}.
+\section{Condensation de masse}
+L'inconvénient de la formulation \eqref{total-discr} est que le schéma n'est pas explicite et on doit chaque fois inverser la matrice $\mathbb{M}$. On veut approcher la matrice de masse $\mathbb{M}$ par une matrice diagonale en utilisant les formules de quadratures suivante
+\begin{equation}
+	\int_{\mathcal{T}}{g(x) dT} \approx \frac{|\mathcal{T}|}{3}\sum_{i = 1}^3{g(S_i)},
+\end{equation}
+où $\mathcal{T}$ est une triangle dans le maillage avec l'aire égal à $|\mathcal{T}|$ et les sommets $S_i, i = 1,2,3$.
+Dans le cas du maillage uniforme, $\mathbb{M}^{cond} = h^2I$, $I$ est la matrice unitaire.
+Les expressions pour la matrice de rigidité et la matrice de masse sans condensation sont présenté ci-dessous.
+\section{Le pas de temps autorise par la condition de CFL}
+En résolvant le problème \eqref{propres} numériquement pour le maillage comme dans fig. \ref{fig:maillage1} on a trouvé les plus grandes valeurs propre $\lambda^{sup}_h$ pour $h = 0.02j, j = 1..10$. Donc, par \eqref{CFL} on obtiens l'estimations pour $\Delta t$, qui sont présentés dans le tableaux dessous.
+	\begin{figure}
+	\centering
+	\includegraphics[height=0.4\linewidth]{images/maillage1}
+	\caption{La discrétisation de domaine  avec $h = 0.8$.}
+	\label{fig:maillage1}
+\end{figure}
+\begin{table}[H]
+	\caption{\label{tab:canonsummary} Le pas de temps maximum autorisé par la condition CFL pour la matrice exacte (gauche) et la matrice condensée (droite) }
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			$h$ & $\Delta t_{ex}$ & $\Delta t_{cond}$ \\
+			\hline
+			0.02 & $-$ &  $-$ \\
+			0.04 &  $ 0.005$ &  $-$ \\
+			0.06 & 0.009 & 12~bit\\
+			0.08 & 0.012 &12~bit\\
+			0.1  & 0.015 &12~bit\\
+			0.12 & 0.018 &12~bit\\
+			0.14 & 0.021 &12~bit\\
+			0.16 & 0.024 &12~bit\\
+			0.18 & 0.028 &12~bit\\
+			0.2  & 0.028 &~bit\\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table} 
+\section{La partie droite (5.7)}
+La partie droite dans \eqref{total-discr} est calculer à l'aide d'une méthode d'interpolation.
+\begin{equation}
+	F^k = M\tilde{F}^k =\sum_{j = 1..3} Mf(t_k, S_j)
+\end{equation}
 \end{document}

@@ -51,18 +51,13 @@ for h_index = 1:size(h)
           end
       end
 end % for l
-end % for maillages
 
 % Calcul de la CFL
-% ----------------
-% Utiliser la commande eigs(....)
-% .
-% .
-% A COMPLETER
-% .
-% .
-% delta_t = ....;
+[V,D] = eigs(KK,MM,1,'LM');
+display(D)
+delta_t = sqrt(4/D);
 fprintf('Temps final %6.2f s ; Pas de temps (CFL) %10.6f s\n',T,delta_t);
+end % for maillages
 
 % Nombre de pas de temps
 % ----------------------
