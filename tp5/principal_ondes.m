@@ -1,4 +1,4 @@
-function principal_ondes(maillages,h,T)
+function principal_ondes(maillages,h,T, type_MM)
 % =====================================================
 %
 % principal_ondes(nom_maillage,T);
@@ -22,6 +22,8 @@ fprintf('Eq. des ondes homogene (Elts Finis P1 ; schema saute-mouton)\n');
 c = 2 ;
 
 for h_index = 1:size(h)
+  h_i = h(h_index);
+  t = cputime;
   nom_maillage = maillages{h_index}
   [Nbpt,Nbtri,Coorneu,Refneu,Numtri,Reftri,Nbaretes,Numaretes,Refaretes]=...
   lecture_msh(nom_maillage);
@@ -38,25 +40,42 @@ for h_index = 1:size(h)
       S2=Coorneu(Numtri(l,2),:);
       S3=Coorneu(Numtri(l,3),:);
     % calcul des matrices elementaires du triangle l 
-   
+    
   % calcul des matrices elementaires (rigidite et masse) 
     Kel=matK_elem(S1, S2, S3, Reftri(l));
     Mel=matM_elem(S1, S2, S3);
-
+    
+  if (type_MM == 0)
+    for i=1:3
+    I = Numtri(l,i);
+      for j=1:3
+        J = Numtri(l,j);
+        MM(I,J) = MM(I,J) + Mel(i,j);
+      end
+    end
+  end
+  
   % On fait l'assemblage des matrices et du second membre
   for i=1:3
-          for j=1:3
-              MM(Numtri(l,i),Numtri(l,j))=MM(Numtri(l,i),Numtri(l,j))+Mel(i,j);
-              KK(Numtri(l,i),Numtri(l,j))=KK(Numtri(l,i),Numtri(l,j))+Kel(i,j);
-          end
-      end
+    I = Numtri(l,i);
+       for j=1:3
+          J = Numtri(l,j);
+          KK(I,J)=KK(I,J)+Kel(i,j);
+       end
+   end
 end % for l
 
 % Calcul de la CFL
-[V,D] = eigs(KK,MM,1,'LM');
-display(D)
-delta_t = sqrt(4/D);
+if(type_MM == 0)
+lambda = eigs(KK,MM);
+lambda_max = lambda(1);
+else
+k = 1/h_i/h_i;
+lambda_max = eigs(k*KK,1);
+end
+delta_t = sqrt(4/lambda_max);
 fprintf('Temps final %6.2f s ; Pas de temps (CFL) %10.6f s\n',T,delta_t);
+t_end = cputime - t
 end % for maillages
 
 % Nombre de pas de temps
