@@ -25,11 +25,11 @@ for h_index = 1:size(h)
   nom_maillage = maillages{h_index}
   [Nbpt,Nbtri,Coorneu,Refneu,Numtri,Reftri,Nbaretes,Numaretes,Refaretes]=...
   lecture_msh(nom_maillage);
-
+  
   % declarations
-  % ------------
+  % ------------ 
   MM = sparse(Nbpt,Nbpt); % matrice de masse
-  KK = sparse(Nbpt,Nbpt); % matrice de rigidite
+  KK_sigma = sparse(Nbpt,Nbpt); % matrice de rigidite
 
   % boucle sur les triangles
   % ------------------------
@@ -49,7 +49,7 @@ for h_index = 1:size(h)
           for j=1:3
             J = Numtri(l,j);
             MM(I,J) = MM(I,J) + Mel(i,j);
-            KK(I,J) = KK(I,J)+Kel(i,j);
+            KK_sigma(I,J) = KK_sigma(I,J)+Kel(i,j);
           end
         end
        else % matrice condensee
@@ -62,7 +62,7 @@ for h_index = 1:size(h)
     MM(I,I) = MM(I,I) + abs(D)/3;
        for j=1:3
           J = Numtri(l,j);
-          KK(I,J)=KK(I,J)+Kel(i,j);
+          KK_sigma(I,J)=KK_sigma(I,J)+Kel(i,j);
        end
     end
   end %pour if
@@ -70,28 +70,30 @@ for h_index = 1:size(h)
   end % for l
   
   % Calcul de la CFL
-  lambda_max = eigs(KK,MM,1);
-  delta_t = 2/c/sqrt(lambda_max);
+  lambda_max = eigs(KK_sigma,MM,1);
+  delta_t = 2/sqrt(lambda_max);
   fprintf('Temps final %6.2f s ; Pas de temps (CFL) %10.6f s\n',T,delta_t)
   
     % Nombre de pas de temps
   % ----------------------
   Nb_temps = round(T/delta_t);
 
+  E = zeros(Nb_temps,1); % energie discrete
+  U_point = zeros(Nb_temps,1); % la solution en point (6.5,1)
+  point_number = find(((Coorneu(:,1).- 6.5).^2 + (Coorneu(:,2).-1.).^2) < 0.002); % nombre du point qui est la plus proche de (6.5,1)
+  
   % Debut du chronometre
   debut_time = cputime;
 
   % solution a t=0 (U0(x) = 0 et U1(x) = 0)
-  F0 = MM*f_gauss(Coorneu(:,1),Coorneu(:,2),0);
-  U0 = zeros(Nbpt,1);
-  U1 = zeros(Nbpt,1);
-  UU0 = U0;
-  MUU1 = 0.5*delta_t^2*F0; % MM*UU1 = MM*UU0 - c^2*delta_t^2/2*KK*UU0 + delta_t^2/2*F0 + delta_t *MM* U1, mais UU0 et U1 sont nuls
-  UU1 = MM\MUU1;
+  UU0 = zeros(Nbpt,1);
+  UU1 = 0.5*delta_t^2*f_gauss(Coorneu(:,1),Coorneu(:,2),0); % M*U1 = M*U0 - delta_t^2/2*K_sigma*U0 + delta_t^2/2*F0 + delta_t*M*U1,...
+                                                            % mais U0 et U1 sont nuls et F0 = M*f_gauss(...)
+  M_inv_K = MM\KK_sigma;
   % Boucle sur les pas de temps
   % ---------------------------
   % Uk-1 = UU0, Uk = UU1 et Uk+1 = UU2
-  E = zeros(Nb_temps,1); % energie discrete
+  
   for k = 1:Nb_temps
     
       tk = k*delta_t;
@@ -103,20 +105,24 @@ for h_index = 1:size(h)
 
       % Obtention de Uk+1
       % -----------------
-      %  UU2 = MM^(-1)*(delta_t^2 * F - c^2 * delta_t^2*KK*UU1 +2*UU1 - UU0), avec F = MM*tilde_F;
-      UU2 = (tilde_F - c*c*MM\(KK*UU1))*(delta_t^2) + 2*UU1-UU0;
+      %  U2 = M^(-1)*(delta_t^2*F - delta_t^2*K_sigma*U1 +2*U1 - U0), avec F = M*tilde_F;
+      UU2 = (tilde_F - M_inv_K*UU1)*(delta_t^2) + 2*UU1-UU0;
        
       % energie discrete E(k+1/2)
-      E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + 0.5*c*c*dot(KK*UU1,UU2);
-
+      E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + 0.5*dot(KK_sigma*UU1,UU2);
+      
+      U_point(k) = UU2(point_number); % la solution en point (6.5,1)
+      
       % Visualisation 
       % -------------
+      %{
       if representation
 
         affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
         axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
               max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
        endif  
+      %}
       % Mise a jour des iteres
       % ----------------------
       UU0 = UU1;
@@ -124,14 +130,25 @@ for h_index = 1:size(h)
   end
   % Arret du chronometre
   % --------------------
-  % A l'aide de cputime
   temps_calcul = cputime - debut_time;
-  cptime = cputime;
+  fprintf('Temps de calcul %6.2f s\n',temps_calcul);
+  
   
   % evolution d'energie en temps 
-  plot(0:delta_t:4,E)
+  figure
+  plot(0:delta_t:T,E)
   
-  fprintf('Temps de calcul %6.2f s\n',temps_calcul);
+  % evolution de solution en point
+  size(U_point)
+  Nb_temps
+  figure
+  plot(0:delta_t:delta_t*(Nb_temps-1),U_point)
+  grid on;
+  xlabel('Temps, s', 'FontSize', 18);
+  ylabel('U(6.5,1)', 'FontSize', 18);
+  title('Evolution de la solution en (6.5,1)', 'FontSize', 20);
+  
+  
 end %pour h
 
 
