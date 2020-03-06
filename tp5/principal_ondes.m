@@ -1,4 +1,4 @@
-function principal_ondes(maillages,h,T, type_MM, representation)
+function principal_ondes(maillages,h,T)
 % =====================================================
 %
 % principal_ondes(nom_maillage,T);
@@ -19,9 +19,9 @@ fprintf('Eq. des ondes homogene (Elts Finis P1 ; schema saute-mouton)\n');
 % Valeurs physiques
 % -----------------
 % Vitesse de propagation 
-c = 2;
+c = 2 ;
+
 for h_index = 1:size(h)
-  h_i = h(h_index);
   nom_maillage = maillages{h_index}
   [Nbpt,Nbtri,Coorneu,Refneu,Numtri,Reftri,Nbaretes,Numaretes,Refaretes]=...
   lecture_msh(nom_maillage);
@@ -38,14 +38,13 @@ for h_index = 1:size(h)
       S2=Coorneu(Numtri(l,2),:);
       S3=Coorneu(Numtri(l,3),:);
     % calcul des matrices elementaires du triangle l 
-    
+   
   % calcul des matrices elementaires (rigidite et masse) 
-      Kel=matK_elem(S1, S2, S3, Reftri(l));
-       
-      if (type_MM == 0) % matrice exacte 
-        Mel=matM_elem(S1, S2, S3);
-        for i=1:3
-        I = Numtri(l,i);
+    Kel=matK_elem(S1, S2, S3, Reftri(l));
+    Mel=matM_elem(S1, S2, S3);
+
+  % On fait l'assemblage des matrices et du second membre
+  for i=1:3
           for j=1:3
             J = Numtri(l,j);
             MM(I,J) = MM(I,J) + Mel(i,j);
@@ -151,6 +150,39 @@ for h_index = 1:size(h)
   
 end %pour h
 
+    tk = k*delta_t;
+        
+    % Calcul du second membre a l'instant tk
+    % --------------------------------------
+    % 1. Contribution de la source
+    % 2. Contribution des iteres precedents
+    % .
+    % A COMPLETER
+    % .
+
+    % Obtention de Uk+1
+    % -----------------
+    % .
+    % A COMPLETER
+    % .
+        
+    % Visualisation 
+    % -------------
+    affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
+    axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
+          max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
+    % Mise a jour des iteres
+    % ----------------------
+    UU0 = UU1;
+    UU1 = UU2;    
+end
+
+% Arret du chronometre
+% --------------------
+% A l'aide de cputime
+% temps_calcul = ....
+
+fprintf('Temps de calcul %6.2f s\n',temps_calcul);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                        fin de la routine
