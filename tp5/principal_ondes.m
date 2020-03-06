@@ -107,7 +107,8 @@ for h_index = 1:size(h)
       UU2 = (tilde_F - c*c*MM\(KK*UU1))*(delta_t^2) + 2*UU1-UU0;
        
       % energie discrete E(k+1/2)
-      E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + 0.5*c*c*dot(KK*UU1,UU2);
+      E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + ...
+      0.5*c*c*dot(KK*UU1,UU2);
 
       % Visualisation 
       % -------------
@@ -129,7 +130,12 @@ for h_index = 1:size(h)
   cptime = cputime;
   
   % evolution d'energie en temps 
+  figure
   plot(0:delta_t:4,E)
+  grid on;
+  xlabel("time, s",'FontSize',18);
+  ylabel("E",'FontSize',18);
+  title('Energie discrete pour la matrice de masse condensee','FontSize',20)
   
   fprintf('Temps de calcul %6.2f s\n',temps_calcul);
 end %pour h
