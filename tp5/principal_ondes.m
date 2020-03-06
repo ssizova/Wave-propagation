@@ -1,4 +1,4 @@
-function principal_ondes(maillages,h,T, type_MM, representation)
+function principal_ondes(maillages,h,T)
 % =====================================================
 %
 % principal_ondes(nom_maillage,T);
@@ -19,9 +19,9 @@ fprintf('Eq. des ondes homogene (Elts Finis P1 ; schema saute-mouton)\n');
 % Valeurs physiques
 % -----------------
 % Vitesse de propagation 
-c = 2;
+c = 2 ;
+
 for h_index = 1:size(h)
-  h_i = h(h_index);
   nom_maillage = maillages{h_index}
   [Nbpt,Nbtri,Coorneu,Refneu,Numtri,Reftri,Nbaretes,Numaretes,Refaretes]=...
   lecture_msh(nom_maillage);
@@ -38,108 +38,78 @@ for h_index = 1:size(h)
       S2=Coorneu(Numtri(l,2),:);
       S3=Coorneu(Numtri(l,3),:);
     % calcul des matrices elementaires du triangle l 
-    
+   
   % calcul des matrices elementaires (rigidite et masse) 
-      Kel=matK_elem(S1, S2, S3, Reftri(l));
-       
-      if (type_MM == 0) % matrice exacte 
-        Mel=matM_elem(S1, S2, S3);
-        for i=1:3
-        I = Numtri(l,i);
+    Kel=matK_elem(S1, S2, S3, Reftri(l));
+    Mel=matM_elem(S1, S2, S3);
+
+  % On fait l'assemblage des matrices et du second membre
+  for i=1:3
           for j=1:3
-            J = Numtri(l,j);
-            MM(I,J) = MM(I,J) + Mel(i,j);
-            KK(I,J) = KK(I,J)+Kel(i,j);
+              MM(Numtri(l,i),Numtri(l,j))=MM(Numtri(l,i),Numtri(l,j))+Mel(i,j);
+              KK(Numtri(l,i),Numtri(l,j))=KK(Numtri(l,i),Numtri(l,j))+Kel(i,j);
           end
-        end
-       else % matrice condensee
-    x1 = S1(1); y1 = S1(2);
-    x2 = S2(1); y2 = S2(2);
-    x3 = S3(1); y3 = S3(2);
-    D = ((x2-x1)*(y3-y1) - (y2-y1)*(x3-x1)); %l'aire du triangle
-    for i=1:3
-    I = Numtri(l,i);
-    MM(I,I) = MM(I,I) + abs(D)/3;
-       for j=1:3
-          J = Numtri(l,j);
-          KK(I,J)=KK(I,J)+Kel(i,j);
-       end
-    end
-  end %pour if
-  
-  end % for l
-  
-  % Calcul de la CFL
-  lambda_max = eigs(KK,MM,1);
-  delta_t = 2/c/sqrt(lambda_max);
-  fprintf('Temps final %6.2f s ; Pas de temps (CFL) %10.6f s\n',T,delta_t)
-  
-    % Nombre de pas de temps
-  % ----------------------
-  Nb_temps = round(T/delta_t);
+      end
+end % for l
 
-  % Debut du chronometre
-  debut_time = cputime;
+% Calcul de la CFL
+[V,D] = eigs(KK,MM,1,'LM');
+display(D)
+delta_t = sqrt(4/D);
+fprintf('Temps final %6.2f s ; Pas de temps (CFL) %10.6f s\n',T,delta_t);
+end % for maillages
 
-  % solution a t=0 (U0(x) = 0 et U1(x) = 0)
-  F0 = MM*f_gauss(Coorneu(:,1),Coorneu(:,2),0);
-  U0 = zeros(Nbpt,1);
-  U1 = zeros(Nbpt,1);
-  UU0 = U0;
-  MUU1 = 0.5*delta_t^2*F0; % MM*UU1 = MM*UU0 - c^2*delta_t^2/2*KK*UU0 + delta_t^2/2*F0 + delta_t *MM* U1, mais UU0 et U1 sont nuls
-  UU1 = MM\MUU1;
-  % Boucle sur les pas de temps
-  % ---------------------------
-  % Uk-1 = UU0, Uk = UU1 et Uk+1 = UU2
-  E = zeros(Nb_temps,1); % energie discrete
-  for k = 1:Nb_temps
-    
-      tk = k*delta_t;
-          
-      % Calcul du second membre a l'instant tk
-      % --------------------------------------
-      % 1. Contribution de la source
-      tilde_F = f_gauss(Coorneu(:,1),Coorneu(:,2),tk);
+% Nombre de pas de temps
+% ----------------------
+Nb_temps = round(T/delta_t);
 
-      % Obtention de Uk+1
-      % -----------------
-      %  UU2 = MM^(-1)*(delta_t^2 * F - c^2 * delta_t^2*KK*UU1 +2*UU1 - UU0), avec F = MM*tilde_F;
-      UU2 = (tilde_F - c*c*MM\(KK*UU1))*(delta_t^2) + 2*UU1-UU0;
-       
-      % energie discrete E(k+1/2)
-      E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + ...
-      0.5*c*c*dot(KK*UU1,UU2);
+% Debut du chronometre
+% ---------------
+% A l'aide de cputime
 
-      % Visualisation 
-      % -------------
-      if representation
+% solution a t=0 (U0(x) = 0 et U1(x) = 0)
+% --------------
+% UU0 = zeros(Nbpt,1);
+% UU1 = ....;
 
-        affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
-        axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
-              max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
-       endif  
-      % Mise a jour des iteres
-      % ----------------------
-      UU0 = UU1;
-      UU1 = UU2;    
-  end
-  % Arret du chronometre
-  % --------------------
-  % A l'aide de cputime
-  temps_calcul = cputime - debut_time;
-  cptime = cputime;
-  
-  % evolution d'energie en temps 
-  figure
-  plot(0:delta_t:4,E)
-  grid on;
-  xlabel("time, s",'FontSize',18);
-  ylabel("E",'FontSize',18);
-  title('Energie discrete pour la matrice de masse condensee','FontSize',20)
-  
-  fprintf('Temps de calcul %6.2f s\n',temps_calcul);
-end %pour h
+% Boucle sur les pas de temps
+% ---------------------------
+% Uk-1 = UU0, Uk = UU1 et Uk+1 = UU2
+for k = 1:Nb_temps
 
+    tk = k*delta_t;
+        
+    % Calcul du second membre a l'instant tk
+    % --------------------------------------
+    % 1. Contribution de la source
+    % 2. Contribution des iteres precedents
+    % .
+    % A COMPLETER
+    % .
+
+    % Obtention de Uk+1
+    % -----------------
+    % .
+    % A COMPLETER
+    % .
+        
+    % Visualisation 
+    % -------------
+    affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
+    axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
+          max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
+    % Mise a jour des iteres
+    % ----------------------
+    UU0 = UU1;
+    UU1 = UU2;    
+end
+
+% Arret du chronometre
+% --------------------
+% A l'aide de cputime
+% temps_calcul = ....
+
+fprintf('Temps de calcul %6.2f s\n',temps_calcul);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                        fin de la routine
