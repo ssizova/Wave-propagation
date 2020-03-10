@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.7)  6 MAR 2020 13:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.5.7)  7 MAR 2020 20:41
 entering extended mode
 **./compte.tex
 (compte.tex
@@ -479,36 +479,80 @@ Package pdftex.def Info: images/maillage1.png  used on input line 260.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[7] [8 <./images/maillage1.png (PNG copy)>] [9] (compte.aux) ) 
+[7] [8 <./images/maillage1.png (PNG copy)>]
+<images/T2.png, id=42, 620.91975pt x 374.5995pt>
+File: images/T2.png Graphic file (type png)
+<use images/T2.png>
+Package pdftex.def Info: images/T2.png  used on input line 300.
+(pdftex.def)             Requested size: 155.99762pt x 94.11263pt.
+<images/T2condense.png, id=44, 517.43312pt x 303.63437pt>
+File: images/T2condense.png Graphic file (type png)
+<use images/T2condense.png>
+Package pdftex.def Info: images/T2condense.png  used on input line 301.
+(pdftex.def)             Requested size: 155.99762pt x 91.54042pt.
+<images/T4.png, id=45, 623.32875pt x 397.485pt>
+File: images/T4.png Graphic file (type png)
+<use images/T4.png>
+Package pdftex.def Info: images/T4.png  used on input line 306.
+(pdftex.def)             Requested size: 155.99762pt x 99.4741pt.
+<images/T4cond.png, id=46, 518.43687pt x 311.66437pt>
+File: images/T4cond.png Graphic file (type png)
+<use images/T4cond.png>
+Package pdftex.def Info: images/T4cond.png  used on input line 307.
+(pdftex.def)             Requested size: 155.99762pt x 93.78061pt.
+<images/E_01.png, id=47, 1204.5pt x 903.375pt>
+File: images/E_01.png Graphic file (type png)
+<use images/E_01.png>
+Package pdftex.def Info: images/E_01.png  used on input line 314.
+(pdftex.def)             Requested size: 207.99702pt x 155.99762pt.
+ [9 <./images/T2.png> <./images/T2condense.png> <./images/T4.png> <./images/T4c
+ond.png>]
+<images/E_cond_01.png, id=55, 1204.5pt x 903.375pt>
+File: images/E_cond_01.png Graphic file (type png)
+<use images/E_cond_01.png>
+Package pdftex.def Info: images/E_cond_01.png  used on input line 320.
+(pdftex.def)             Requested size: 207.99702pt x 155.99762pt.
+<images/u_6,5,1.png, id=56, 1204.5pt x 903.375pt>
+File: images/u_6,5,1.png Graphic file (type png)
+<use images/u_6,5,1.png>
+Package pdftex.def Info: images/u_6,5,1.png  used on input line 329.
+(pdftex.def)             Requested size: 207.99702pt x 155.99762pt.
+ [10 <./images/E_01.png (PNG copy)> <./images/E_cond_01.png (PNG copy)>]
+<images/u_6,5,1_condense.png, id=60, 1204.5pt x 903.375pt>
+File: images/u_6,5,1_condense.png Graphic file (type png)
+<use images/u_6,5,1_condense.png>
+Package pdftex.def Info: images/u_6,5,1_condense.png  used on input line 335.
+(pdftex.def)             Requested size: 207.99702pt x 155.99762pt.
+ [11 <./images/u_6,5,1.png (PNG copy)> <./images/u_6,5,1_condense.png (PNG copy
+)>] [12] [13] (compte.aux) ) 
 Here is how much of TeX's memory you used:
- 5719 strings out of 492945
- 85528 string characters out of 3125809
- 167483 words of memory out of 3000000
- 9510 multiletter control sequences out of 15000+200000
+ 5767 strings out of 492945
+ 86453 string characters out of 3125809
+ 167519 words of memory out of 3000000
+ 9550 multiletter control sequences out of 15000+200000
  13033 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,15n,39p,672b,423s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/Nastya/
-AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:
-/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmcsc10.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmex10.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Nastya/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/Nastya/AppData/L
-ocal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Nas
-tya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-<C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmr17.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
-lic/amsfonts/cm/cmr6.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Nastya/AppData/Local/Programs/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Nastya/AppData/Loc
-al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Nasty
-a/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C
-:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/sy
-mbols/msbm10.pfb>
-Output written on compte.pdf (9 pages, 667048 bytes).
+ 41i,15n,39p,726b,423s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Nastya/AppData/Local/Progra
+ms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/Nastya/AppDa
+ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/User
+s/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi1
+2.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmmi6.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
+e1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Nastya/AppData/Local/Pro
+grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Nastya/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users
+/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.p
+fb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmsy10.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmsy6.pfb><C:/Users/Nastya/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Nastya/AppData/Local/Progr
+ams/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on compte.pdf (13 pages, 1209523 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
+ 115 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

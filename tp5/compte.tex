@@ -268,16 +268,16 @@
 				\hline
 				$h$ & $\Delta t_{ex}$ & $\Delta t_{cond}$ \\
 				\hline
-				0.02 & 0.001 &  0.003 \\ 
-				0.04 & 0.003 & 0.007 \\
-				0.06 & 0.004 & 0.01\\
-				0.08 & 0.006 & 0.015\\
-				0.1  & 0.008 & 0.018\\
-				0.12 & 0.009 & 0.022\\
-				0.14 & 0.011 & 0.025\\
-				0.16 & 0.012 & 0.028\\
-				0.18 & 0.014 & 0.034\\
-				0.2  & 0.014 & 0.038\\
+				0.02 & 0.003 &  0.005 \\ 
+				0.04 & 0.005 & 0.01 \\
+				0.06 & 0.009 & 0.015\\
+				0.08 & 0.012 & 0.021\\
+				0.1  & 0.015 & 0.026\\
+				0.12 & 0.018 & 0.031\\
+				0.14 & 0.022 & 0.036\\
+				0.16 & 0.024 & 0.04\\
+				0.18 & 0.029 & 0.049\\
+				0.2  & 0.028 & 0.052\\
 				\hline
 			\end{tabular}
 		\end{center}
@@ -294,30 +294,68 @@
 	\begin{equation*}
 	F^k \approx M\tilde{F}^k \quad \text{avec} \quad \tilde{F}^k = f(t_k,M_J)_{J=1,N}.
 	\end{equation*}
-\section{Résultats de calcul }
+\section{Résultats de calcul}
+Les figures ci-dessous montrent les solutions obtenues aux instants $T \approx 2$ et $T \approx 4$ (vue de dessus à la surface) pour le maillage avec $h=0.1$.
 \begin{center}
 	\hspace{1cm}\includegraphics[width=0.4\textwidth]{images/T2.png}\hspace{1cm}
-	\includegraphics[width=0.4\textwidth]{images/Tcond2.png}\hspace{1cm}
-	{La distribution de solution pour $T = 2$ pour la matrice exacte (gauche) et matrice condensée (droite)}.
+	\includegraphics[width=0.4\textwidth]{images/T2condense.png}\hspace{1cm}
+	{La distribution de solution pour $T \approx 2$ pour la matrice exacte (à gauche) et matrice condensée (à droite)}.
 \end{center}
 
 \begin{center}
 	\hspace{1cm}\includegraphics[width=0.4\textwidth]{images/T4.png}\hspace{1cm}
-	\includegraphics[width=0.4\textwidth]{images/Tcond4.png}\hspace{1cm}
-	{La distribution de solution pour $T = 4$ pour la matrice exacte (gauche) et matrice condensée (droite)}.
+	\includegraphics[width=0.4\textwidth]{images/T4cond.png}\hspace{1cm}
+	{La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite)}.
 \end{center}
 \section{L'énergie discrète}
-L'évolution d'énergie discrète est affiché dans la fig. \eqref{fig:energie_e} pour la matrice de masse exacte et  pour la matrice de masse condensée dans la fig. \eqref{fig:energie_c}. On peut voir que  à l'instant l'énergie est nulle (car les conditions initiales sont nulles), mais à partir de certain temps $t_0 \approx 0.1$ l'énergie égale à une constante très petite. Cela correspond bien à la théorie, parce que pour $t$ assez grande la partie droite $f(x, y, t) = e^{-50(t + 0.2)^2 e^{-50((x - 3)^2 + (y - 1)^2)}} $ devient assez petite. Et on sait bien, que en l'absence de source l'énergie discrète se conserve.
-\begin{figure}
+L'évolution d'énergie discrète est affichée dans la fig. \eqref{fig:energie_e} pour la matrice de masse exacte et  pour la matrice de masse condensée dans la fig. \eqref{fig:energie_c}. On peut voir que  au début l'énergie est nulle (car les conditions initiales sont nulles), mais à partir de certain temps $t_0 \approx 0.1$ l'énergie est égale à une constante très petite. Cela correspond bien à la théorie, parce que pour $t$ assez grande la partie droite $f(x, y, t) = e^{-50(t + 0.2)^2 e^{-50((x - 3)^2 + (y - 1)^2)}} $ devient assez petite. Et on sait bien, que en l'absence de source l'énergie discrète se conserve.
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=0.4\linewidth]{images/E_01}
-	\caption{L'énergie discrète pour la matrice de masse exacte.}
+	\caption{L'énergie discrète pour la matrice de masse exacte, $h=0.1$.}
 	\label{fig:energie_e}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=0.4\linewidth]{images/E_cond_01}
-	\caption{L'énergie discrète pour la matrice de masse condensée.}
+	\caption{L'énergie discrète pour la matrice de masse condensée, $h=0.1$.}
 	\label{fig:energie_c}
 \end{figure}	
+
+\section{L'évolution de la solution au point}
+Les figures \eqref{fig:u_point_exacte} et \eqref{fig:u_point_cond} représentent l'évolution de la solution numerique au point le plus proche de $(6.5,1)$ de maillage (le maillage avec $h=0.1$). Fig.\eqref{fig:u_point_exacte} correspond au cas de matrice de masse exacte et fig.\eqref{fig:u_point_cond} au cas de matrice condensée.
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.4\linewidth]{images/u_6,5,1}
+	\caption{L'évolution de la solution au (6.5,1), la matrice de masse exacte.}
+	\label{fig:u_point_exacte}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.4\linewidth]{images/u_6,5,1_condense}
+	\caption{L'évolution de la solution au (6.5,1), la matrice de masse condensée.}
+	\label{fig:u_point_cond}
+\end{figure}
+On peut remarquer que dans les deux cas, jusqu'à un certain point dans le temps, la solution est nulle, puis elle change, ce qui correspond au moment où l'onde atteint ce point. Pour la matrice de masse exacte ce moment est égal à environ 1 seconde (mais les oscillations plus significatives viennent à $\approx 1.5 s$), et pour la matrice condensée environ 1.5 secondes. La différence entre les solutions est moins que $2\cdot10^{-6}$, ce qui est bien précis pour le maillage avec $h=0.1$. 
+
+\section{Le temps de calcul}
+Les temps de calcul pour la matrice de masse exacte sont les suivants (on considère le maillage avec $h=0.1$ et on exécute le programme en Octave):
+\begin{itemize} 
+	\item  347.77s avec affichage de la solution à chaque pas de temps
+	\item  3.77s sans affichage.
+\end{itemize}
+Pour la matrice condensée:
+\begin{itemize} 
+	\item  210.2s avec affichage de la solution à chaque pas de temps
+	\item  0.14s sans affichage.
+\end{itemize}
+A partir de ces chiffres (notamment des temps de calcul sans affichage, car l'affichage prend beaucoup de temps), il est évident que le schéma avec la matrice de masse condensée est beaucoup moins coûteaux que celui avec la matrice exacte (environ 27 fois plus rapide sans affichage). Pour le maillage avec $h=0.08$, par exemple, on a le temps de calcul sans affichage pour $\mathbb{M}^{exacte}$ égal à 12.05s et pour $\mathbb{M}^{cond}$ égal à 0.17s, ce qui est encore mieux ($\approx 71$ fois plus rapide).
+
+\section{CFL}
+Pour le maillage avec $h=0.1$ on a calculé $\Delta t$ à partir de formule \eqref{CFL} avec égalité. On a obtenu dans le cas de matrice de masse exacte $\Delta t_{calcul\acute{e}} = 0.015246$. Après la variation de pas de temps on a vu que jusqu'à $\Delta t = 0.0153$ il y a la stabilité de solution: la valeur absolue maximale (parmi les valeurs aux points du maillages) de la solution est toujours (c'est à dire, pour chaque instant $t$ jusqu'à $T=4$) inférieure à $10^{-3}$, mais après pour $\Delta t = 0.01531$ on a déjà la valeur absolue maximale égale à 9.5921 et après pour $\Delta t = 0.154$ ce maximum atteint $2.25 \cdot 10^{12}$, qui montre clairement l'instabilité.
+
+Pour la matrice condensée ($h$ est toujours égal à 0.1) $\Delta t_{calcul\acute{e}} = 0.025498$. Pour $\Delta t = 0.0263$ on voit déjà la croissance de la valeur absolue maximale de la solution jusqu'à 357.2. Alors que avant $\Delta t = 0.026$ c'est toujours inférieure à $10^{-3}$. Pour $\Delta t = 0.027$ la solution explose jusqu'à $5.6 \cdot 10^{10}$. Autrement dit, l'instabilité aussi.
+
+Ainsi, on conclut que la CFL numerique correspond (i.e. qu'elle coïncide avec une grande précision) à celle prédite par la théorie (l'expression \eqref{CFL}).
+
 \end{document}
