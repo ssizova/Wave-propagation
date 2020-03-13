@@ -86,7 +86,7 @@ end % pour if
   % ----------------------
   Nb_temps = round(T/delta_t);
 
-  %E = zeros(Nb_temps,1); % energie discrete
+  E = zeros(Nb_temps,1); % energie discrete
   %U_point = zeros(Nb_temps,1); % la solution en point (6.5,1)
   %point_number = find(((Coorneu(:,1).-6.5).^2 + (Coorneu(:,2).-1.).^2) < 0.002); % nombre du point qui est la plus proche de (6.5,1)
   
@@ -122,19 +122,19 @@ end % pour if
        
       % energie discrete E(k+1/2)
       % -----------------
-      % E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + 0.5*dot(KK_sigma*UU1,UU2);
+       E(k) = 0.5*dot(MM*(UU2-UU1),(UU2-UU1))/delta_t/delta_t + 0.5*dot(KK_sigma*UU1,UU2);
       
       % la solution en point (6.5,1)
       % -----------------
       % U_point(k) = UU2(point_number); 
-      
+      %{
       % Visualisation 
       % -------------
-      %{      
+            
        affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
        axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
               max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
-       %}  
+       %}
        
       % Mise a jour des iteres
       % ----------------------
@@ -152,17 +152,17 @@ end % pour if
               
   % E_h(h_index) = E(70); % on prend la valeur d'energie apres le moment de stabilisation
   
-  %{
+  
   % evolution d'energie en temps
   % ----------------------------- 
   figure
-  plot(0:delta_t:delta_t*(Nb_temps-1),E)
+  plot(0:delta_t:delta_t*(Nb_temps-1),E, 'LineWidth', 3)
   grid on;
   xlabel('Temps, s', 'FontSize', 18);
   ylabel('E', 'FontSize', 18);
-  title('Energie discrete pour la matrice de masse exacte', 'FontSize', 20);
+  title('Energie discrete pour la matrice de masse condensee', 'FontSize', 20);
    
-  
+  %{
   % evolution de solution en point
   % ------------------------------
   figure

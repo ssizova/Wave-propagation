@@ -1,6 +1,6 @@
 clear all;
 close all;
-geometry = 3; ## 1 - rectangle, 2 - geom_deux_milieux,...
+geometry = 1; ## 1 - rectangle, 2 - geom_deux_milieux,...
               ## 3 - geom_trois_milieux
 size = 1 ## nombre des maillages successifs, jusqu'a 10 pour geometry 1
 [maillages,h] = maillage(geometry, size);
