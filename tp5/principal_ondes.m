@@ -16,11 +16,8 @@ function principal_ondes(maillages,h,T, type_MM, representation)
 % =====================================================
 fprintf('Eq. des ondes homogene (Elts Finis P1 ; schema saute-mouton)\n');
 
-% Valeurs physiques
-% -----------------
-% Vitesse de propagation 
-c = 2 ;
-E_h = zeros(size(h),1);
+
+% E_h = zeros(size(h),1); % pour evaluation d'energie a chaque pas de h 
 
 for h_index = 1:size(h)
   nom_maillage = maillages{h_index}
@@ -32,20 +29,19 @@ for h_index = 1:size(h)
   MM = sparse(Nbpt,Nbpt); % matrice de masse
   KK_sigma = sparse(Nbpt,Nbpt); % matrice de rigidite
 
-  % boucle sur les triangles
+  % boucle sur les triangles: construction de matrices
   % ------------------------
+  if(type_MM == 0) % cas de matrice de masse exacte
   for l=1:Nbtri
       S1=Coorneu(Numtri(l,1),:);
       S2=Coorneu(Numtri(l,2),:);
       S3=Coorneu(Numtri(l,3),:);
-    % calcul des matrices elementaires du triangle l 
    
-  % calcul de matrice elementaire de rigidite
-    Kel=matK_elem(S1, S2, S3, Reftri(l));
-
+  % calcul de matrices elementaires de rigidite et de masse
+    Kel=matK_elem(S1, S2, S3, Reftri(l)); % matrice elementaire de rigidite
+    Mel=matM_elem(S1, S2, S3); % matrice elementaire de masse
+    
   % On fait l'assemblage des matrices
-  if(type_MM == 0) % matrice de masse exacte
-   Mel=matM_elem(S1, S2, S3); % matrice elementaire de masse
    for i=1:3
      I = Numtri(l,i);
           for j=1:3
@@ -54,7 +50,18 @@ for h_index = 1:size(h)
             KK_sigma(I,J) = KK_sigma(I,J)+Kel(i,j);
           end
         end
-       else % matrice de masse condensee
+  end % pour l
+  
+else   % cas de matrice de masse condensee
+  for l=1:Nbtri
+      S1=Coorneu(Numtri(l,1),:);
+      S2=Coorneu(Numtri(l,2),:);
+      S3=Coorneu(Numtri(l,3),:);
+   
+  % calcul de matrice elementaire de rigidite
+    Kel=matK_elem(S1, S2, S3, Reftri(l));
+    
+  % On fait l'assemblage des matrices
     x1 = S1(1); y1 = S1(2);
     x2 = S2(1); y2 = S2(2);
     x3 = S3(1); y3 = S3(2);
@@ -67,10 +74,9 @@ for h_index = 1:size(h)
           KK_sigma(I,J)=KK_sigma(I,J)+Kel(i,j);
        end
     end
-  end %pour if
-  
-  end % for l
-  
+end % pour l
+end % pour if
+
   % Calcul de la CFL
   lambda_max = eigs(KK_sigma,MM,1);
   delta_t = 2/sqrt(lambda_max);
@@ -82,7 +88,7 @@ for h_index = 1:size(h)
 
   %E = zeros(Nb_temps,1); % energie discrete
   %U_point = zeros(Nb_temps,1); % la solution en point (6.5,1)
-  %point_number = find(((Coorneu(:,1).- 6.5).^2 + (Coorneu(:,2).-1.).^2) < 0.002); % nombre du point qui est la plus proche de (6.5,1)
+  %point_number = find(((Coorneu(:,1).-6.5).^2 + (Coorneu(:,2).-1.).^2) < 0.002); % nombre du point qui est la plus proche de (6.5,1)
   
   % Debut du chronometre
   debut_time = cputime;
@@ -120,16 +126,11 @@ for h_index = 1:size(h)
       
       % la solution en point (6.5,1)
       % -----------------
-      %U_point(k) = UU2(point_number); 
+      % U_point(k) = UU2(point_number); 
       
       % Visualisation 
       % -------------
-      %{
-        trisurf(Numtri,Coorneu(:,1),Coorneu(:,2),UU2);
-       % Unchanged scale of the x- and y-axes (rectangle pictured as a rectangle)
-       % ----------
-       axis('equal');
-       
+      %{      
        affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
        axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
               max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
@@ -145,11 +146,12 @@ for h_index = 1:size(h)
   temps_calcul = cputime - debut_time;
   fprintf('Temps de calcul %6.2f s\n',temps_calcul);
   
-  affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]);
+  affiche(UU2, Numtri, Coorneu, ['Temps = ', num2str(tk)]); % affichage au dernier pas de temps
        axis([min(Coorneu(:,1)),max(Coorneu(:,1)),min(Coorneu(:,2)),...
               max(Coorneu(:,2)),-0.0002 0.0003  -0.00001 0.00015]);
-  %E_h(h_index) = E(70)
-    
+              
+  % E_h(h_index) = E(70); % on prend la valeur d'energie apres le moment de stabilisation
+  
   %{
   % evolution d'energie en temps
   % ----------------------------- 
@@ -169,6 +171,7 @@ for h_index = 1:size(h)
   xlabel('Temps, s', 'FontSize', 18);
   ylabel('U(6.5,1)', 'FontSize', 18);
   title('Evolution de la solution au (6.5,1)', 'FontSize', 20);
+ 
  %}
   
 end %pour h

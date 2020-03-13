@@ -262,7 +262,7 @@
 		\label{fig:maillage1}
 	\end{figure}
 	\begin{table}[H]
-		\caption{\label{tab:canonsummary} Le pas de temps maximum autorisé par la condition CFL pour la matrice exacte (gauche) et la matrice condensée (droite) }
+		\caption{\label{tab:canonsummary} Le pas de temps maximum autorisé par la condition CFL pour la matrice exacte (à gauche) et la matrice condensée (à droite)}
 		\begin{center}
 			\begin{tabular}{|c|c|c|}
 				\hline
@@ -336,7 +336,7 @@ Les figures \eqref{fig:u_point_exacte} et \eqref{fig:u_point_cond} représentent
 	\caption{L'évolution de la solution au (6.5,1), la matrice de masse condensée.}
 	\label{fig:u_point_cond}
 \end{figure}
-On peut remarquer que dans les deux cas, jusqu'à un certain point dans le temps, la solution est nulle, puis elle change, ce qui correspond au moment où l'onde atteint ce point. Pour la matrice de masse exacte ce moment est égal à environ 1 seconde (mais les oscillations plus significatives viennent à $\approx 1.5 s$), et pour la matrice condensée environ 1.5 secondes. La différence entre les solutions est moins que $2\cdot10^{-6}$, ce qui est bien précis pour le maillage avec $h=0.1$. 
+On peut remarquer que dans les deux cas, jusqu'à un certain point dans le temps, la solution est nulle, puis elle change, ce qui correspond au moment où l'onde atteint ce point. Pour la matrice de masse exacte ce moment est égal à environ 1 seconde (mais les oscillations plus significatives viennent à $\approx 1.5 s$), et pour la matrice condensée environ 1.5 secondes. La différence entre les solutions est moins que $4\cdot10^{-5}$. 
 
 \section{Le temps de calcul}
 Les temps de calcul pour la matrice de masse exacte sont les suivants (on considère le maillage avec $h=0.1$ et on exécute le programme en Octave):
@@ -358,4 +358,63 @@ Pour la matrice condensée ($h$ est toujours égal à 0.1) $\Delta t_{calcul\acu
 
 Ainsi, on conclut que la CFL numerique correspond (i.e. qu'elle coïncide avec une grande précision) à celle prédite par la théorie (l'expression \eqref{CFL}).
 
+\section{Calcul sur differentes maillages}
+On a calculé l'énergie discrète pour les maillages avec différents $h$. Les resultats sont présentés dans le tableau ci-dessous:
+	\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			$h$ & $E_{ex}$ & $E_{cond}$ \\
+			\hline
+			0.2 & 0.00000024964 &  0.00000041518 \\ 
+			0.18 & 0.00000029034 & 0.00000043283 \\
+			0.16 & 0.00000028985 & 0.00000038459 \\
+			0.14 & 0.00000031923 & 0.00000039970 \\
+			0.12 & 0.00000031509 & 0.00000039538 \\
+			0.1 & 0.00000033083 & 0.00000037992 \\
+			0.08 & 0.00000034839 & 0.00000038059 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\caption{\label{tab:energie} L'énergie discrète pour la matrice exacte (à gauche) et la matrice condensée (à droite)}
+\end{table} 
+\noindent On voit que la différence entre $E_{ex}$ et $E_{cond}$ diminue avec la réduction de $h$.
+
+\noindent On présente aussi les graphiques de la solution au point $(6.5,1)$ pour $h=0.06$. 
+\begin{figure}[H]
+	\hspace{1cm}\includegraphics[width=0.41\textwidth]{images/u_6,5,1_0,06}\hspace{1cm}
+	\includegraphics[width=0.41\textwidth]{images/u_6,5,1_0,06_condense}\hspace{1cm}
+	\caption{L'évolution de la solution au (6.5,1) pour la matrice exacte (à gauche) et matrice condensée (à droite).}
+	\label{fig:u_point_6,5,1_0,06}
+\end{figure}
+On peut remarquer dans la figure~\eqref{fig:u_point_6,5,1_0,06} qu'il y a moins de petites oscillations de solutions et que ces deux solutions sont plus similaires que pour le schéma avec $h=0.1$. Cela signifie qu'avec la décroissance de $h$ la matrice de masse condensée se rapproche plus précisément de la matrice de masse exacte.
+
+Ci-dessous dans la figure~\eqref{fig:u_point_7,0,8_0,06}, c'est un autre exemple de l'évolution de la solution. On prend le point (7,0.8) et $h=0.06$. On peut voir dans ce cas aussi que la solution pour la matrice condensée se rapproche assez précisément de la solution pour la matrice exacte.
+\begin{figure}[H]
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_7,0,8_0,06}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_7,0,8_0,06_condense}\hspace{1cm}
+	\caption{L'évolution de la solution au (7,0.8) pour la matrice exacte (à gauche) et matrice condensée (à droite).}
+	\label{fig:u_point_7,0,8_0,06}
+\end{figure}
+
+Ainsi, nous pouvons conclure que l'utilisation d'une matrice condensée est très pratique, car les calculs sont beaucoup plus rapides et moins coûteux, mais en même temps nous obtenons une approximation assez précise.
+
+\section{Deux milieux et trois milieux}
+\textbf{Deux milieux.}
+
+On fait des simulations pour le maillage avec $h=0.1$. Ci-dessous sont des graphiques de la solution au moment $T \approx 4$ pour différentes combinaisons de $\sigma_1$ et $\sigma_2$.
+\begin{center}
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_deux_mil_1_20}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_deux_mil_1_20_cond}\hspace{1cm}
+ {La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite), $\sigma_1 = 1$ et $\sigma_2 = 20$.}
+\end{center}
+\begin{center}
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_deux_mil_4_1}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_deux_mil_4_1_cond}\hspace{1cm}
+	{La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite), $\sigma_1 = 4$ et $\sigma_2 = 1$.}
+\end{center}
+
+Tout d'abord, nous notons que les solutions pour les deux matrices de masse (exacte et condensée) sont très similaires. Ce qui confirme le fait que la matrice condensée donne une bonne approximation. 
+
+Ensuite, on voit que dans le premier cas, où $\sigma_1 \ll \sigma_2$ et les ondes ne se propagent pas dans la petite zone (petit rectangle).
 \end{document}
