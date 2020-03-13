@@ -17,8 +17,8 @@ function [Kel] = matK_elem(S1, S2, S3, Reftri)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 sigma1 = 4;
-sigma2 = 16;
-sigma3 = 1;
+sigma2 = 1;
+sigma3 = 36;
 
 % preliminaires, pour faciliter la lecture:
 x1 = S1(1); y1 = S1(2);

@@ -378,7 +378,9 @@ On a calculé l'énergie discrète pour les maillages avec différents $h$. Les 
 	\end{center}
 \caption{\label{tab:energie} L'énergie discrète pour la matrice exacte (à gauche) et la matrice condensée (à droite)}
 \end{table} 
-\noindent On voit que la différence entre $E_{ex}$ et $E_{cond}$ diminue avec la réduction de $h$. En plus, l'érreur relative diminue monotone  avec la diminution de la taille du maillage. On présente aussi les graphiques de la solution au point $(6.5,1)$ pour $h=0.06$. 
+On voit que la différence entre $E_{ex}$ et $E_{cond}$ diminue avec la réduction de $h$. En plus, l'érreur relative diminue d'une manière monotone avec la diminution de la taille du maillage. Ce qui peut être interprété comme une bonne approximation de la matrice exacte par la matrice condensée.
+
+On présente aussi les graphiques de la solution au point $(6.5,1)$ pour $h=0.06$. 
 \begin{figure}[H]
 	\hspace{1cm}\includegraphics[width=0.41\textwidth]{images/u_6,5,1_0,06}\hspace{1cm}
 	\includegraphics[width=0.41\textwidth]{images/u_6,5,1_0,06_condense}\hspace{1cm}
@@ -398,9 +400,11 @@ Ci-dessous dans la figure~\eqref{fig:u_point_7,0,8_0,06}, c'est un autre exemple
 Ainsi, nous pouvons conclure que l'utilisation d'une matrice condensée est très pratique, car les calculs sont beaucoup plus rapides et moins coûteux, mais en même temps nous obtenons une approximation assez précise.
 
 \section{Deux milieux et trois milieux}
+On fait des simulations pour le maillage avec $h=0.1$. Notez que nous spécifions $\sigma$ selon la partie du domaine en utilisant la fonction \textbf{Reftri} dans la construction de la matrice $K^{elem}$ ($\sigma_1$ correspond au domaine principal, $\sigma_2$ correspond au petit rectangle et $\sigma_3$ au petit triangle). 
+
 \textbf{Deux milieux.}
 
-On fait des simulations pour le maillage avec $h=0.1$. Ci-dessous sont des graphiques de la solution au moment $T \approx 4$ pour différentes combinaisons de $\sigma_1$ et $\sigma_2$.
+Ci-dessous sont des graphiques de la solution au moment $T \approx 4$ pour différentes combinaisons de $\sigma_1$ et $\sigma_2$.
 \begin{center}
 	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_deux_mil_1_20}\hspace{1cm}
 	\includegraphics[width=0.42\textwidth]{images/u_deux_mil_1_20_cond}\hspace{1cm}
@@ -414,5 +418,27 @@ On fait des simulations pour le maillage avec $h=0.1$. Ci-dessous sont des graph
 
 Tout d'abord, nous notons que les solutions pour les deux matrices de masse (exacte et condensée) sont très similaires. Ce qui confirme le fait que la matrice condensée donne une bonne approximation. 
 
-Ensuite, on voit que dans le premier cas, où $\sigma_1 \ll \sigma_2$ et les ondes ne se propagent pas dans la petite zone (petit rectangle).
+Ensuite, on voit que dans le premier cas, où $\sigma_1 \ll \sigma_2$, les ondes se dispersent dans la petite zone (petit rectangle). D'un point de vue physique, cette diffusion des ondes peut s'expliquer par le fait que l'on passe d'un milieu plus lent à un milieu plus rapide ($\sigma_1 = c_1^2 < c_2^2= \sigma_2$). Et dans le cas contraire ($\sigma_1 = c_1^2 > c_2^2= \sigma_2$) on voit une contraction des ondes dans la petite zone.
+
+\textbf{Trois milieux.}
+
+La taille de maillage et toujours $h=0.1$. $\sigma_3$ correspond à $\sigma$ dans le petit triangle. Comme on voit, l'approximation par la matrice de masse condensée est toujours bien présice.
+
+\begin{center}
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_trois_mil_1_20_9}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_trois_mil_1_20_9_cond}\hspace{1cm}
+	{La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite), $\sigma_1 = 1, \sigma_2 = 20$ et $\sigma_3 = 9$.}
+\end{center}
+\begin{center}
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_trois_mil_4_1_36}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_trois_mil_4_1_36_cond}\hspace{1cm}
+	{La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite), $\sigma_1 = 4, \sigma_2 = 1$ et $\sigma_3 = 36$.}
+\end{center}
+\begin{center}
+	\hspace{1cm}\includegraphics[width=0.42\textwidth]{images/u_trois_mil_4_16_1}\hspace{1cm}
+	\includegraphics[width=0.42\textwidth]{images/u_trois_mil_4_16_1_cond}\hspace{1cm}
+	{La distribution de solution pour $T \approx 4$ pour la matrice exacte (à gauche) et matrice condensée (à droite), $\sigma_1 = 4, \sigma_2 = 16$ et $\sigma_3 = 1$.}
+\end{center}
+
+On peut noter que lorsque $\sigma$ dans les petites zones est plus grande que dans la zone principale, il n'y a pratiquement pas de propagation d'ondes, dans ces petites zones.  Et dans le cas contraire, on observe une contraction des ondes. L'éxplication physique de ce phénomène et la même que dans le cas de deux milieux.
 \end{document}
